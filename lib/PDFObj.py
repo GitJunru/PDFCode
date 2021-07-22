@@ -1,10 +1,5 @@
 #! /usr/bin/env python
 # coding=utf-8
-"""
-Copyright (c) 2014 Yuhei Otsubo
-Released under the MIT license
-http://opensource.org/licenses/mit-license.php
-"""
 
 import re
 import decimal
@@ -370,6 +365,7 @@ class DictionaryObject(dict, PdfObject):
                     stream.bak_pos()
                 break
             # read and append obj
+
             key = ReadObject(stream)
             # skip leading whitespace
             stream.skip_blank()
@@ -419,6 +415,7 @@ class IndirectObject(PdfObject):
         return NullObject()
 
 
+# 分辨接下来是什么对象并返回这个对象
 def ReadObject(stream):
     stream.skip_blank()
     pos = stream.get_pos()

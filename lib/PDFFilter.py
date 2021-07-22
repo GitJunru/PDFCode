@@ -1,10 +1,5 @@
 #! /usr/bin/env python
 # coding=utf-8
-"""
-Copyright (c) 2014 Yuhei Otsubo
-Released under the MIT license
-http://opensource.org/licenses/mit-license.php
-"""
 
 import PDFObj
 import re
@@ -16,6 +11,7 @@ import zlib
 import JPEGCheck
 
 
+# 数据解压，并显示出unused_data
 def decompress(data):
     try:
         decompressor = zlib.decompressobj()
@@ -30,6 +26,7 @@ def decompress(data):
         return "zlib decompress error\n" + str(e) + "aaa" + data
 
 
+# 压缩数据
 def compress(data):
     return zlib.compress(data)
 

@@ -1,10 +1,5 @@
 #! /usr/bin/env python
 # coding=utf-8
-"""
-Copyright (c) 2014 Yuhei Otsubo
-Released under the MIT license
-http://opensource.org/licenses/mit-license.php
-"""
 
 import struct
 

@@ -1,10 +1,5 @@
 #! /usr/bin/env python
 # coding=utf-8
-"""
-Copyright (c) 2014 Yuhei Otsubo
-Released under the MIT license
-http://opensource.org/licenses/mit-license.php
-"""
 
 import Stream
 import re
@@ -91,6 +86,7 @@ class PDFFile:
                 print >> output, "%08X-%08X:obj" % (
                     obj.start_pos, obj.end_pos -
                     1), obj.getID(), obj.getGeneration(), "old(not used)"
+            # 打印对象
             elif obj.fOBJ:
                 if obj.start_pos != 0xFFFFFFFF:
                     unfinish = True
@@ -99,8 +95,6 @@ class PDFFile:
                         obj.start_pos,
                         obj.end_pos - 1), obj.getID(), obj.getGeneration(
                         ), "Linearized parameter Dictionary"
-#                elif obj.fFreeOBJ:
-#                    print >> output,"%08X-%08X:obj"%(obj.start_pos,obj.end_pos-1),obj.getID(),obj.getGeneration(), "Free Object"
                 elif obj.fHintStream:
                     print >> output, "%08X-%08X:obj" % (
                         obj.start_pos, obj.end_pos -
@@ -131,7 +125,7 @@ class PDFFile:
                     else:
                         print >> output, "%08X-%08X:obj" % (
                             obj.start_pos, obj.end_pos - 1), obj.getID(
-                            ), obj.getGeneration(), "xref from", obj.xref
+                            ), "xref from", obj.xref
             elif obj.fTrailer:
                 unfinish = True
                 print >> output, "%08X-%08X:trailer" % (obj.start_pos,
@@ -191,7 +185,7 @@ class PDFFile:
         t_encrypt = None
         not_use_obj = {}
 
-        # 正则匹配
+        # 正则匹配，
         p1 = re.compile("([-+]?\d+)[\s\0]+([-+]?\d+)[\s\0]+obj", re.I)
         p1_ = re.compile("obj", re.I)
         p2 = re.compile("trailer", re.I)
@@ -205,7 +199,6 @@ class PDFFile:
             start_pos = self.stream.get_pos()
             self.stream.skip_blank()        # 跳过开头所有无效字符
             pos = self.stream.get_pos()
-            # print "%08X" % pos
             line = self.stream.read_line_u()  # 读一行数据
             # search object 用正则查找对象
             m1 = p1.match(line)
@@ -281,19 +274,7 @@ class PDFFile:
                         else:
                             self.stream.bak_pos()
                     else:
-                        self.stream.bak_pos()
-
-
-#                    while tok in '\r\n':
-#                        tok = self.stream.get_u()
-#                        l += 1
-#                        if l == 2:
-#                            self.stream.bak_pos()
-#                            break
-#
-#                    else:
-#                        self.stream.bak_pos()
-# self.stream.skip_blank()
+                        self.stream.bak_pos() 
                     txt = ''
                     lens = 0
                     if isinstance(obj, PDFObj.DictionaryObject):
@@ -332,12 +313,6 @@ class PDFFile:
                             self.stream.set_pos(pos)
                             if p1_3.match(phrase):  # 'endstream'
                                 self.stream.read_phrase_u()
-                                # pos = self.stream.get_pos()
-                                # phrase = self.stream.read_phrase_u()
-                                # if p1_1.match(phrase):
-                                #    self.stream.skip_blank()
-                                # else:
-                                #    self.stream.set_pos(pos)
                                 break
                         txt += self.stream.get()
                         tok = self.stream.get_u()
@@ -349,6 +324,7 @@ class PDFFile:
                             txt = txt[:-2]
                         else:
                             txt = txt[:-1]
+                    # 保存流的内容
                     if isinstance(obj, PDFObj.DictionaryObject):
                         obj[PDFObj.NameObject('__streamdata__')] = PDFObj.StringObject(txt)
 
@@ -377,12 +353,11 @@ class PDFFile:
                 self.stream.set_pos(start_pos)
                 self.stream.read_phrase_u()
                 self.stream.skip_blank()
-                try: 
+                try:
                     trailer = PDFObj.ReadObject(
                         self.stream
-                    )  # dict(trailer,**PDFObj.ReadObject(self.stream))
+                    )
                 except(Exception):
-
                     obj = PDFObj.DictionaryObject()
 
                 self.Trailer.update(trailer)
@@ -659,7 +634,6 @@ class PDFFile:
         for var in not_use_obj:
             if self.isObj2(var):
                 obj = self.GetObj2(var)
-                # obj.fOBJ = False
                 obj.fFreeOBJ = True
 
         t.append(time.time())

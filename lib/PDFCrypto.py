@@ -1,20 +1,13 @@
 #! /usr/bin/env python
 # coding=utf-8
-"""
-Copyright (c) 2014 Yuhei Otsubo
-Released under the MIT license
-http://opensource.org/licenses/mit-license.php
-"""
 
 import hashlib
-import binascii
 import Crypto.Cipher.AES
 from sys import version_info
 if version_info < (2, 5):
     from md5 import md5
 else:
     from hashlib import md5
-import base64
 import PDFObj
 
 

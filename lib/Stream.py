@@ -1,15 +1,9 @@
 #! /usr/bin/env python
 # coding=utf-8
-"""
-Copyright (c) 2014 Yuhei Otsubo
-Released under the MIT license
-http://opensource.org/licenses/mit-license.php
-"""
-
 
 class Stream:
     def __init__(self):
-        self.lines = ""     # ±£´æÕû¸öÎÄ¼şµÄÒ»¸ö×Ö·û´®lines
+        self.lines = ""     # ä¿å­˜æ•´ä¸ªæ–‡ä»¶çš„ä¸€ä¸ªå­—ç¬¦ä¸²lines
         self.analysis = {}
         self.pos = 0
 
@@ -36,7 +30,7 @@ class Stream:
         self.pos += add
 
     # get without unescape
-    # »ñÈ¡Ò»¸ö×Ö·û
+    # è·å–ä¸€ä¸ªå­—ç¬¦
     def get(self):
         self.pos_ = self.get_pos()
         if self.isEOF():
@@ -48,7 +42,7 @@ class Stream:
             return ret
 
     # get with unescape
-    # ¶ÁÒ»¸ö×Ö·û£¬ÓÃ½âÂëµÄ·½Ê½£ºÈç¹û¶Áµ½#xx£¬·µ»Øxx
+    # è¯»ä¸€ä¸ªå­—ç¬¦ï¼Œç”¨è§£ç çš„æ–¹å¼ï¼šå¦‚æœè¯»åˆ°#xxï¼Œè¿”å›xx
     def get_u(self):
         pos = self.get_pos()
         tok = self.get()
@@ -108,7 +102,7 @@ class Stream:
             tok = self.get()
         return ret
 
-    # ¶ÁÒ»ÕûĞĞÊı¾İ£¬Ò»Ö±¶Áµ½\r»òÕß\n½áÊø
+    # è¯»ä¸€æ•´è¡Œæ•°æ®ï¼Œä¸€ç›´è¯»åˆ°\ræˆ–è€…\nç»“æŸ
     def read_line_u(self):
         ret = ""
         tok = self.get_u()
@@ -136,7 +130,7 @@ class Stream:
             tok = self.get_u()
         return ret
 
-    # ¶ÁÒ»¸ö±ß½ç×Ö·û»òÕß¶ÁÒ»¶ÎÓĞĞ§Êı¾İ
+    # è¯»ä¸€ä¸ªè¾¹ç•Œå­—ç¬¦æˆ–è€…è¯»ä¸€æ®µæœ‰æ•ˆæ•°æ®
     def read_phrase_u(self):
         ret = ""
         # self.skip_blank()

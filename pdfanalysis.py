@@ -1,10 +1,5 @@
 #! /usr/bin/env python
 # coding=utf-8
-"""
-Copyright (c) 2014-2015 Yuhei Otsubo
-Released under the MIT license
-http://opensource.org/licenses/mit-license.php
-"""
 
 import sys
 import argparse
@@ -50,19 +45,6 @@ parser.add_argument(
     type=int,
     default=0,
     help='output Object No.(-1:Suspicious only 0:all) (default: 0)')
-parser.add_argument(
-    '-s',
-    dest='stream',
-    metavar='ObjectNo.',
-    type=int,
-    default=0,
-    help='output Stream\'s Object No.(-1:Suspicious only 0:all) (default: 0)')
-parser.add_argument('-O',
-                    dest='outputfile',
-                    metavar='FileName',
-                    type=str,
-                    default="a.out",
-                    help='Output File Name (default: "a.out")')
 parser.add_argument('-p',
                     dest='password',
                     metavar='Password',
@@ -76,14 +58,12 @@ t1 = time.time()
 
 filename = args.FileName
 pdffile = lib.PDFFile.PDFFile()
-pdffile.ReadFile(filename, args.password)
+pdffile.ReadFile(filename, args.password)  # 读文件
 
 if args.object:
     pdffile.OutputObject(args.object)
-elif args.stream:
-    pdffile.OutputStream(args.stream)
 else:
-
+    # 输出对象列表
     output = pdffile.PrintObjectList()
     judge = False
 
@@ -126,11 +106,11 @@ else:
                         ), 'zlib decompress unused data:', m.groups()[0]
                         judge = True
                 # xml form
-                p = re.compile('(<\?xml)|(xmlns)')
+                p = re.compile('(<\?zlib)|(xmlns)')
                 m = p.search(obj['__streamdata__'])
                 if m:
                     print 'obj', obj.getID(), obj.getGeneration(), 'xml form'
-                # SWF File
+                # SWF File Flash
                 p = re.compile('[CF]WS')
                 m = p.match(obj['__streamdata__'])
                 if m:
